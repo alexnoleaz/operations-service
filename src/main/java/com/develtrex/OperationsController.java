@@ -10,6 +10,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableCircuitBreaker
+@RequestMapping("api/operations")
 public class OperationsController {
     @Value("${user.name}")
     private String userName;
@@ -28,7 +30,7 @@ public class OperationsController {
     private ResultsClientRest resultsClientRest;
 
     @HystrixCommand(fallbackMethod = "fallbackError")
-    @GetMapping("operations/{a}/{b}")
+    @GetMapping("/{a}/{b}")
     public String getOperations(@PathVariable float a, @PathVariable float b){
         return resultsClientRest.showResult(a-b);
     }
